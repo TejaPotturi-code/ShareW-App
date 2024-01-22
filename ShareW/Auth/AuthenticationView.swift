@@ -170,7 +170,7 @@ struct AuthenticationView: View {
             }
             
             print("Account created: \(result?.user.uid ?? "")")
-            self.errormessage = "Account Created \(result?.user.uid ?? "")"
+            self.errormessage = "Account Created"
             
             password = ""
             type.toggle()

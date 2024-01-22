@@ -11,15 +11,13 @@ struct SingleGroupView: View {
     
     @Binding var group: Group
     @State var email: String = ""
+    @State var showMembers: Bool = false
     
     @State var logsarray : [Logs] = []
     
     var body: some View {
         ScrollView {
             HStack {
-                //                //Text("Welcome \(email.replacingOccurrences(of: "@gmail.com", with: "").capitalized)")
-                //                    .font(.title2)
-                //                    .padding(.horizontal)
                 Text("Welcome to the \(group.title) Group!")
                     .font(.title2)
                     .padding(.horizontal)
@@ -29,28 +27,67 @@ struct SingleGroupView: View {
                 Text("No expensed Added!")
                     .padding()
             } else {
-                HStack {
-                    Text(group.value < 0 ? "You Owe!" : "You Get!")
-                    Spacer()
-                    VStack {
-                        ForEach(group.oweMoney, id: \.self) { value in
-                            Text(value.keys.description)
+                ForEach(group.oweMoney, id: \.self) { dictionary in
+                    let GetDictionary = dictionary.filter { $0.value >= 0 }
+                    let OweDictionary = dictionary.filter { $0.value < 0 }
+                    if GetDictionary.count > 0 {
+                        HStack {
+                            Text("You Get!")
+                            Spacer()
+                            VStack {
+                                ForEach(GetDictionary.sorted(by: { $0.value > $1.value }).prefix(3), id: \.key) { key, value in
+                                            
+                                    Text("\(key)  $\(value)")
+                                }
+                                if GetDictionary.count > 3 {
+                                    HStack {
+                                        Spacer()
+                                        Text("..See More")
+                                            .font(.callout)
+                                            .foregroundStyle(Color.blue)
+                                    }
+                                    
+                                }
+                            }
+                            
                         }
+                        .padding()
+                        .foregroundStyle(Color.green)
+                    }
+                    
+                    if OweDictionary.count > 0 {
+                        HStack {
+                            Text("You Owe!")
+                            Spacer()
+                            VStack {
+                                ForEach(OweDictionary.sorted(by: { $0.value > $1.value }).prefix(3), id: \.key) { key, value in
+                                            
+                                    Text("\(key) $\(value)")
+                                }
+                                if OweDictionary.count > 3 {
+                                    HStack {
+                                        Spacer()
+                                        Text("..See More")
+                                            .font(.callout)
+                                            .foregroundStyle(Color.blue)
+                                    }
+                                }
+                            }
+                        }
+                        .padding()
+                        .foregroundStyle(Color.red)
                     }
                 }
-                .padding()
-                .foregroundStyle(group.value < 0 ? Color.red : Color.green)
                 Text("Total \(group.value)")
                     .foregroundStyle(group.value < 0 ? Color.red : Color.green)
             }
             
-            ForEach(group.members, id: \.self) { mem in
-                Text(mem)
-            }
+            
             
             
             ForEach(logsarray, id: \.id) { log in
                 
+                Divider()
                 HStack {
                     Text("\(log.title.capitalized)")
                     Spacer()
@@ -76,14 +113,42 @@ struct SingleGroupView: View {
                         }
                         .foregroundStyle(Color.red)
                     }
+                    Image(systemName: "chevron.right")
+                        .resizable()
+                        .frame(width: 10, height: 10)
+                        .foregroundStyle(Color.gray)
                 }
                 .padding(.horizontal)
                 Spacer()
             }
-            
+            Divider()
         }
         .onAppear(perform: {
             getUserDebts()
+        })
+        .sheet(isPresented: $showMembers, content: {
+            
+            NavigationView(content: {
+                List {
+                    Section("Members:") {
+                        ForEach(group.members, id: \.self) { mem in
+                            Text(mem)
+                        }
+                    }
+                }
+                .toolbar(content: {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button {
+                            showMembers.toggle()
+                        } label: {
+                            Text("Close")
+                        }
+                        
+                    }
+                })
+            })
+            
+            
         })
         .scrollIndicators(.hidden)
         .toolbar(content: {
@@ -104,7 +169,7 @@ struct SingleGroupView: View {
             
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
-                    
+                    showMembers.toggle()
                 } label: {
                     Image(systemName: "person.2.badge.gearshape.fill")
                 }
@@ -177,6 +242,6 @@ class Logs: Identifiable {
 
 #Preview {
     NavigationStack {
-        SingleGroupView(group: .constant(Group(uid: "", title: "", type: "", value: 0.0, members: [""],oweMoney: [])))
+        SingleGroupView(group: .constant(Group(uid: "0DF433A0-5172-4AA0-A74F-EAE56E345BEB", title: "Test", type: "College", value: 20.0, members: ["share@gmail.com", "share3@gmail.com"],oweMoney: [["share3@gmail.com": 20.0]])))
     }
 }

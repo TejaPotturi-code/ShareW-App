@@ -61,9 +61,6 @@ struct FriendsView: View {
                         }
                     }
                 }
-                .onDelete(perform: { indexSet in
-                    
-                })
             }
             .navigationTitle("Friends")
             .scrollIndicators(.hidden)

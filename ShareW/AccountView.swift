@@ -56,13 +56,13 @@ struct AccountView: View {
                 Section {
                     
                     NavigationLink {
-                        Text("Here Comes")
+                        Text("This feature will be available in the next Update!")
                     } label: {
                         Text("Update Password")
                     }
                     .font(.title3)
                     NavigationLink {
-                        Text("Here Comes")
+                        Text("This feature will be available in the next Update!")
                     } label: {
                         Text("Update Number")
                     }
@@ -76,13 +76,13 @@ struct AccountView: View {
                 Section {
                     
                     NavigationLink {
-                        Text("Here Comes")
+                        Text("This feature will be available in the next Update!")
                     } label: {
                         Text("Rating for ShareW")
                     }
                     .font(.title3)
                     NavigationLink {
-                        Text("Here Comes")
+                        Text("This feature will be available in the next Update!")
                     } label: {
                         Text("Contact us")
                     }
@@ -93,7 +93,7 @@ struct AccountView: View {
                         .font(.headline)
                 }
                 
-                Text("Created with :),By Teja in Lubbock,\n United States")
+                Text("Created with :)\nBy Teja")
                     .multilineTextAlignment(.center)
                 
             }
@@ -119,8 +119,6 @@ struct AccountView: View {
     }
     
     private func getUserDetails() {
-
-        let uid : String = UserDefaults.standard.object(forKey: "uid") as! String
         self.email = UserDefaults.standard.object(forKey: "email") as! String
         self.imageURL = UserDefaults.standard.object(forKey: "imageURL") as! String
     }
@@ -142,12 +140,3 @@ struct UserImageView : View {
     }
 }
 
-
-#Preview {
-    AccountView(isLogin: .constant(true))
-    //    var image = AsyncImage(url: URL(string: "https://firebasestorage.googleapis.com:443/v0/b/sharew-2dfae.appspot.com/o/lD0Aj1HjNvNiHXwmkpx13xHVs0z1?alt=media&token=9408654e-866f-42e1-b468-edd9b2257ebb")) { image in
-    //        UserImageView(image: image)
-    //    } placeholder: {
-    //        Color.green
-    //    }
-}
