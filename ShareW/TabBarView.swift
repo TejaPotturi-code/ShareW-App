@@ -32,17 +32,11 @@ struct TabBarView: View {
             }
             .tag(1)
             
-            Text("Search Page")
-                .tabItem {
-                    Image(systemName: "magnifyingglass")
-                }
-                .tag(2)
-            
             AccountView(isLogin: $isLogin)
                 .tabItem {
                     Image(systemName: "person.fill")
                 }
-                .tag(3)
+                .tag(2)
         })
     }
 }
