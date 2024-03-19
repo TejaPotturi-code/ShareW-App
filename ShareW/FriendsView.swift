@@ -29,14 +29,12 @@ struct FriendsView: View {
     @State var showSheet: Bool = false
     @State var friends: [User] = []
     
-    init() {
-        
-    }
-    
     var body: some View {
         NavigationStack {
             List {
-                ForEach(friends, id: \.uid) { friend in
+                ForEach(friends.filter({ User in
+                    User.email != email
+                }), id: \.uid) { friend in
                     VStack {
                         HStack {
                             Text(friend.email)

@@ -151,10 +151,10 @@ struct AuthenticationView: View {
                 self.errormessage = "Login Failed!"
                 return
             }
-            self.errormessage = "Login Succesfull."
+            //self.errormessage = "Login Succesfull."
             
             UserDefaults.standard.set(email, forKey: "email")
-            
+            self.password = ""
             isLogin.toggle()
         }
         

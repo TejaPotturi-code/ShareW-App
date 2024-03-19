@@ -10,14 +10,13 @@ import FirebaseFirestore
 
 struct ExpenseView: View {
     
+    @Environment(\.presentationMode) var presentationMode
+    
     @Binding var group: Group
     @Binding var email: String
-    
     @State var name: String = ""
     @State var value: String = ""
-    
     @State var showAddMembers: Bool = false
-    
     @State var friends : [String] = []
     @State var aaddfriends : [String] = []
     
@@ -191,6 +190,7 @@ struct ExpenseView: View {
                             print("Error in saving data \(err)")
                         }
                         print("Success in adding owes")
+                        self.presentationMode.wrappedValue.dismiss()
                     }
             }
     }
